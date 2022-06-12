@@ -11,7 +11,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 sh "ls -la"
-                sh "docker build -t ${env.IMAGE_NAME}:${env.TAG1} -f Dockerfile"
+                sh "docker build -t ${env.IMAGE_NAME}:${env.TAG1} -f ./Dockerfile"
             
             }
         }

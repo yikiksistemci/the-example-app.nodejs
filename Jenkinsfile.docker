@@ -1,0 +1,28 @@
+pipeline {
+    agent {
+        label 'jenkins-slave-node'
+    }
+    environment {
+        CI = 'true'
+        TAG1 = 'jenkins'
+        IMAGE_NAME = 'yunusyasar/examplenode'
+    }
+    stages {
+        stage('Docker Build') {
+            steps {
+                sh '''
+                    docker build -t ${env.IMAGE_NAME}:${env.TAG1} .
+                '''
+            }
+        }
+
+        stage('Docker Push'){
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]){
+                    sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+
+                }
+            }
+        }
+    }
+}
